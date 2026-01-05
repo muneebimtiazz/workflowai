@@ -485,7 +485,7 @@ export function ApplyingCandidatesIntegrated() {
               <Card 
                 key={candidate.id} 
                 className={`p-6 hover:shadow-lg transition-all duration-200 ${
-                  isTopCandidate ? 'border-2 border-green-400 bg-gradient-to-br from-green-50 to-white' : 'border border-gray-200 bg-white'
+                  isTopCandidate ? 'border-2 border-green-400 bg-linear-to-br from-green-50 to-white' : 'border border-gray-200 bg-white'
                 }`}
               >
                 <div className="space-y-4">

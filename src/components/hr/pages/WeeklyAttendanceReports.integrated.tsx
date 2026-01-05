@@ -321,7 +321,7 @@ export function WeeklyAttendanceReportsIntegrated() {
                     <CardHeader>
                       <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-3">
-                          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-semibold text-lg">
+                          <div className="w-12 h-12 rounded-full bg-linear-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-semibold text-lg">
                             {report.employee_name.split(' ').map((n: string) => n[0]).join('')}
                           </div>
                           <div>
