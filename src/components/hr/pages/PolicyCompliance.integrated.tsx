@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Card } from '../../ui/card';
+import { Card, CardContent } from '../../ui/card';
 import { Button } from '../../ui/button';
 import { Badge } from '../../ui/badge';
 import { Input } from '../../ui/input';
@@ -214,10 +214,10 @@ export function PolicyComplianceIntegrated() {
 
   if (loading) {
     return (
-      <div className="p-6 flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <Loader2 className="w-12 h-12 text-blue-600 animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">Loading policy compliance data...</p>
+      <div className="max-w-9xl mx-auto space-y-6">
+        <div className="flex flex-col items-center justify-center min-h-[400px]">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+          <span className="ml-2 text-sm text-muted-foreground">Loading policy compliance data...</span>
         </div>
       </div>
     );
@@ -225,14 +225,11 @@ export function PolicyComplianceIntegrated() {
 
   if (error) {
     return (
-      <div className="p-6">
-        <Card className="p-6 border-red-200 bg-red-50">
-          <div className="flex items-center space-x-3">
-            <XCircle className="w-6 h-6 text-red-600" />
-            <div>
-              <h3 className="font-semibold text-red-900">Error Loading Data</h3>
-              <p className="text-sm text-red-700">{error}</p>
-            </div>
+      <div className="max-w-9xl mx-auto space-y-6">
+        <Card className="p-6 border-destructive bg-destructive/10">
+          <div className="flex items-center gap-2 text-destructive">
+            <XCircle className="w-5 h-5" />
+            <span>{error}</span>
           </div>
           <Button onClick={fetchData} className="mt-4">
             Try Again
@@ -282,8 +279,8 @@ export function PolicyComplianceIntegrated() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-semibold ">Policy & Compliance Management</h2>
-          <p className="text-gray-600">Manage organizational policies and ensure regulatory compliance</p>
+          <h2 className="text-2xl font-semibold text-foreground">Policy & Compliance Management</h2>
+          <p className="text-sm text-muted-foreground mt-1">Manage organizational policies and ensure regulatory compliance</p>
         </div>
         <div className="flex items-center space-x-3">
           <Button variant="outline" onClick={fetchData}>
@@ -650,17 +647,16 @@ export function PolicyComplianceIntegrated() {
       </div>
 
       {/* Key Metrics */}
-      <div className="grid grid-cols-4 gap-6">
+      <div className="grid grid-cols-4 gap-4">
         {complianceMetrics.map((metric, index) => (
-          <Card key={index} className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">{metric.label}</p>
-                <p className="text-3xl font-bold text-gray-900">{metric.value}</p>
-                <p className="text-sm text-gray-500 mt-1">{metric.change}</p>
+          <Card key={index}>
+            <CardContent className="pt-6">
+              <div className="text-center">
+                <p className="text-sm text-muted-foreground">{metric.label}</p>
+                <p className="text-3xl font-bold text-foreground">{metric.value}</p>
+                <p className="text-sm text-muted-foreground mt-1">{metric.change}</p>
               </div>
-              <metric.icon className={`w-8 h-8 ${metric.color}`} />
-            </div>
+            </CardContent>
           </Card>
         ))}
       </div>
@@ -678,7 +674,7 @@ export function PolicyComplianceIntegrated() {
         <TabsContent value="overview" className="space-y-6">
           <div className="grid grid-cols-2 gap-6">
             <Card className="p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Policies by Category</h3>
+              <h3 className="text-lg font-semibold text-foreground mb-4">Policies by Category</h3>
               {stats?.by_category && Object.keys(stats.by_category).length > 0 ? (
                 <div className="space-y-3">
                   {Object.entries(stats.by_category).map(([category, count]: [string, any]) => (
@@ -697,7 +693,7 @@ export function PolicyComplianceIntegrated() {
             </Card>
 
             <Card className="p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Violations by Severity</h3>
+              <h3 className="text-lg font-semibold text-foreground mb-4">Violations by Severity</h3>
               {stats?.violations_by_severity && Object.keys(stats.violations_by_severity).length > 0 ? (
                 <div className="space-y-3">
                   {Object.entries(stats.violations_by_severity).map(([severity, count]: [string, any]) => (
@@ -729,7 +725,7 @@ export function PolicyComplianceIntegrated() {
           </div>
 
           <Card className="p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Compliance Status Summary</h3>
+            <h3 className="text-lg font-semibold text-foreground mb-4">Compliance Status Summary</h3>
             <div className="grid grid-cols-2 gap-4">
               <div className="p-4 bg-green-50 rounded-lg">
                 <p className="text-sm font-medium text-green-900">Active Policies</p>
@@ -746,7 +742,7 @@ export function PolicyComplianceIntegrated() {
         <TabsContent value="policies" className="space-y-6">
           <Card className="p-6">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-lg font-semibold text-gray-900">Policy Management ({policies.length})</h3>
+              <h3 className="text-lg font-semibold text-foreground">Policy Management ({policies.length})</h3>
               <div className="flex items-center space-x-3">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -772,7 +768,7 @@ export function PolicyComplianceIntegrated() {
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex-1">
                         <div className="flex items-center space-x-3 mb-2">
-                          <h4 className="text-lg font-semibold text-gray-900">{policy.title || policy.name}</h4>
+                          <h4 className="text-lg font-semibold text-foreground">{policy.title || policy.name}</h4>
                           <Badge variant={
                             policy.status === 'active' ? 'default' :
                             'outline'
@@ -851,7 +847,7 @@ export function PolicyComplianceIntegrated() {
         <TabsContent value="violations" className="space-y-6">
           <Card className="p-6">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-lg font-semibold text-gray-900">Policy Violations ({violations.length})</h3>
+              <h3 className="text-lg font-semibold text-foreground">Policy Violations ({violations.length})</h3>
               <Button>
                 <Plus className="w-4 h-4 mr-2" />
                 Report Violation
@@ -921,7 +917,7 @@ export function PolicyComplianceIntegrated() {
         <TabsContent value="frameworks" className="space-y-6">
           <Card className="p-6">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-lg font-semibold text-gray-900">Regulatory Frameworks</h3>
+              <h3 className="text-lg font-semibold text-foreground">Regulatory Frameworks</h3>
               <Button onClick={fetchData}>
                 <RefreshCw className="w-4 h-4 mr-2" />
                 Sync Status
@@ -940,7 +936,7 @@ export function PolicyComplianceIntegrated() {
                   <div key={framework.id} className="border border-gray-200 rounded-lg p-6">
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex-1">
-                        <h4 className="text-lg font-semibold text-gray-900 mb-1">{framework.name}</h4>
+                        <h4 className="text-lg font-semibold text-foreground mb-1">{framework.name}</h4>
                         <p className="text-sm text-gray-600 mb-3">{framework.description}</p>
                         <div className="flex items-center space-x-2 mb-3">
                           <Badge variant={
@@ -975,7 +971,7 @@ export function PolicyComplianceIntegrated() {
         <TabsContent value="analytics" className="space-y-6">
           <div className="grid grid-cols-2 gap-6">
             <Card className="p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Compliance Trends</h3>
+              <h3 className="text-lg font-semibold text-foreground mb-4">Compliance Trends</h3>
               <div className="h-64 bg-gray-50 rounded-lg flex items-center justify-center">
                 <div className="text-center">
                   <TrendingUp className="w-12 h-12 text-gray-400 mx-auto mb-2" />
@@ -986,7 +982,7 @@ export function PolicyComplianceIntegrated() {
             </Card>
 
             <Card className="p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Key Metrics</h3>
+              <h3 className="text-lg font-semibold text-foreground mb-4">Key Metrics</h3>
               <div className="space-y-3">
                 <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                   <span className="text-sm text-gray-600">Total Policies</span>

@@ -1,5 +1,5 @@
 import  { useState, useEffect } from 'react';
-import { Card } from '../../ui/card';
+import { Card, CardContent } from '../../ui/card';
 import { Button } from '../../ui/button';
 import { Badge } from '../../ui/badge';
 import { Input } from '../../ui/input';
@@ -121,10 +121,10 @@ export function JobOpeningsIntegrated() {
 
   if (loading) {
     return (
-      <div className="p-6 flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <Loader2 className="w-12 h-12 animate-spin mb-4 text-primary" />
-          <p className="text-sm text-muted-foreground">Loading job openings...</p>
+      <div className="max-w-9xl mx-auto space-y-6">
+        <div className="flex flex-col items-center justify-center min-h-[400px]">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+          <span className="ml-2 text-sm text-muted-foreground">Loading job openings...</span>
         </div>
       </div>
     );
@@ -132,18 +132,17 @@ export function JobOpeningsIntegrated() {
 
   if (error) {
     return (
-      <div className="p-6">
+      <div className="max-w-9xl mx-auto space-y-6">
         <Card className="p-6 border-destructive bg-destructive/10">
-          <div className="flex items-center gap-2">
-            <XCircle className="w-6 h-6 text-destructive" />
-            <div>
-              <h3 className="font-semibold text-destructive">Error Loading Data</h3>
-              <p className="text-sm text-destructive/80">{error}</p>
+          <CardContent className="p-6">
+            <div className="flex items-center gap-2 text-destructive">
+              <XCircle className="w-5 h-5" />
+              <span>{error}</span>
             </div>
-          </div>
-          <Button onClick={fetchJobs} className="mt-4">
-            Try Again
-          </Button>
+            <Button onClick={fetchJobs} className="mt-4">
+              Try Again
+            </Button>
+          </CardContent>
         </Card>
       </div>
     );
@@ -161,9 +160,8 @@ export function JobOpeningsIntegrated() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-        <h2 className="text-2xl font-semibold text-foreground">Job Opening</h2>
-
-          <p className="text-sm text-muted-foreground">Create and manage job postings</p>
+          <h2 className="text-2xl font-semibold text-foreground">Job Opening</h2>
+          <p className="text-sm text-muted-foreground mt-1">Create and manage job postings</p>
         </div>
         <div className="flex items-center gap-2">
           <Button variant="outline" onClick={fetchJobs}>
@@ -179,21 +177,37 @@ export function JobOpeningsIntegrated() {
 
       {/* Stats */}
       <div className="grid grid-cols-4 gap-4">
-        <Card className="p-4">
-          <p className="text-sm text-muted-foreground mb-1">Total Jobs</p>
-          <p className="text-3xl font-bold text-foreground">{stats.total}</p>
+        <Card>
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground">Total Jobs</p>
+              <p className="text-3xl font-bold text-foreground">{stats.total}</p>
+            </div>
+          </CardContent>
         </Card>
-        <Card className="p-4">
-          <p className="text-sm text-muted-foreground mb-1">Open</p>
-          <p className="text-3xl font-bold text-foreground">{stats.open}</p>
+        <Card>
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground">Open</p>
+              <p className="text-3xl font-bold text-foreground">{stats.open}</p>
+            </div>
+          </CardContent>
         </Card>
-        <Card className="p-4">
-          <p className="text-sm text-muted-foreground mb-1">Draft</p>
-          <p className="text-3xl font-bold text-foreground">{stats.draft}</p>
+        <Card>
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground">Draft</p>
+              <p className="text-3xl font-bold text-foreground">{stats.draft}</p>
+            </div>
+          </CardContent>
         </Card>
-        <Card className="p-4">
-          <p className="text-sm text-muted-foreground mb-1">Closed</p>
-          <p className="text-3xl font-bold text-foreground">{stats.closed}</p>
+        <Card>
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground">Closed</p>
+              <p className="text-3xl font-bold text-foreground">{stats.closed}</p>
+            </div>
+          </CardContent>
         </Card>
       </div>
 
@@ -216,7 +230,7 @@ export function JobOpeningsIntegrated() {
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="border border-input rounded-md px-3 py-2 text-sm"
+              className="border border-input rounded-md px-3 py-2 text-sm bg-background"
             >
               <option value="all">All Status</option>
               <option value="draft">Draft</option>
@@ -229,11 +243,12 @@ export function JobOpeningsIntegrated() {
 
       {/* Job Listings */}
       {filteredJobs.length === 0 ? (
-        <Card className="p-8">
-          <div className="text-center py-12">
-            <Briefcase className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-xl font-semibold text-foreground mb-2">No job openings found</h3>
-            <p className="text-sm text-muted-foreground mb-4">
+        <Card>
+          <CardContent className="pt-6">
+            <div className="text-center py-12">
+              <Briefcase className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
+              <h3 className="text-lg font-semibold text-foreground mb-2">No job openings found</h3>
+              <p className="text-sm text-muted-foreground mb-4">
               {searchTerm || statusFilter !== 'all'
                 ? 'Try adjusting your search filters'
                 : 'Create your first job opening to get started'}
@@ -245,6 +260,7 @@ export function JobOpeningsIntegrated() {
               </Button>
             )}
           </div>
+          </CardContent>
         </Card>
       ) : (
         <div className="space-y-4">
@@ -253,7 +269,7 @@ export function JobOpeningsIntegrated() {
               <div className="flex items-start justify-between mb-4">
                 <div className="flex-1">
                   <div className="flex items-center space-x-3 mb-2">
-                    <h3 className="text-xl font-semibold text-gray-900">{job.title}</h3>
+                    <h3 className="text-xl font-semibold text-foreground">{job.title}</h3>
                     <Badge variant={
                       job.status === 'open' ? 'default' :
                       job.status === 'draft' ? 'secondary' :
@@ -267,10 +283,10 @@ export function JobOpeningsIntegrated() {
                       </Badge>
                     )}
                   </div>
-                  <p className="text-gray-600 mb-3">{job.department} • {job.experience_level}</p>
-                  <p className="text-gray-700 mb-4 line-clamp-2">{job.description}</p>
+                  <p className="text-sm text-muted-foreground mb-3">{job.department} • {job.experience_level}</p>
+                  <p className="text-sm text-foreground mb-4 line-clamp-2">{job.description}</p>
                   
-                  <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 mb-4">
+                  <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-4">
                     <span className="flex items-center">
                       <MapPin className="w-4 h-4 mr-1" />
                       {job.location}
@@ -293,14 +309,14 @@ export function JobOpeningsIntegrated() {
                     ))}
                   </div>
 
-                  <div className="flex items-center space-x-2 p-3 bg-gray-50 rounded-lg">
-                    <LinkIcon className="w-4 h-4 text-gray-400" />
-                    <span className="text-sm text-gray-600">CV Analyzer Link:</span>
+                  <div className="flex items-center space-x-2 p-3 bg-muted rounded-lg">
+                    <LinkIcon className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-sm text-muted-foreground">CV Analyzer Link:</span>
                     <a 
                       href={job.cv_analyzer_link} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="text-sm text-blue-600 hover:underline flex items-center"
+                      className="text-sm text-primary hover:underline flex items-center"
                     >
                       {job.cv_analyzer_link}
                       <ExternalLink className="w-3 h-3 ml-1" />
@@ -309,8 +325,8 @@ export function JobOpeningsIntegrated() {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between pt-4 border-t border-gray-200">
-                <div className="text-sm text-gray-500">
+              <div className="flex items-center justify-between pt-4 border-t">
+                <div className="text-sm text-muted-foreground">
                   Created: {new Date(job.created_at).toLocaleDateString()}
                   {job.published_at && ` • Published: ${new Date(job.published_at).toLocaleDateString()}`}
                 </div>

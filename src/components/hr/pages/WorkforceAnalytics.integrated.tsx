@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Card } from '../../ui/card';
+import { Card, CardContent } from '../../ui/card';
 import { Button } from '../../ui/button';
 import { Badge } from '../../ui/badge';
 import { Progress } from '../../ui/progress';
@@ -88,10 +88,10 @@ export function WorkforceAnalyticsIntegrated() {
 
   if (loading) {
     return (
-      <div className="p-6 flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <Loader2 className="w-12 h-12 text-blue-600 animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">Loading workforce analytics...</p>
+      <div className="max-w-9xl mx-auto space-y-6">
+        <div className="flex flex-col items-center justify-center min-h-[400px]">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+          <span className="ml-2 text-sm text-muted-foreground">Loading workforce analytics...</span>
         </div>
       </div>
     );
@@ -99,14 +99,11 @@ export function WorkforceAnalyticsIntegrated() {
 
   if (error) {
     return (
-      <div className="p-6">
-        <Card className="p-6 border-red-200 bg-red-50">
-          <div className="flex items-center space-x-3">
-            <XCircle className="w-6 h-6 text-red-600" />
-            <div>
-              <h3 className="font-semibold text-red-900">Error Loading Data</h3>
-              <p className="text-sm text-red-700">{error}</p>
-            </div>
+      <div className="max-w-9xl mx-auto space-y-6">
+        <Card className="p-6 border-destructive bg-destructive/10">
+          <div className="flex items-center gap-2 text-destructive">
+            <XCircle className="w-5 h-5" />
+            <span>{error}</span>
           </div>
           <Button onClick={fetchData} className="mt-4">
             Try Again
@@ -172,8 +169,8 @@ export function WorkforceAnalyticsIntegrated() {
       {/* Header */}
       <div className="flex flex-row items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-semibold">Workforce Analytics</h2>
-          <p className="text-gray-600 mt-1">Comprehensive workforce insights and trend analysis</p>
+          <h2 className="text-2xl font-semibold text-foreground">Workforce Analytics</h2>
+          <p className="text-sm text-muted-foreground mt-1">Comprehensive workforce insights and trend analysis</p>
         </div>
         <div className="flex items-center space-x-3">
           <Button variant="outline" onClick={fetchData}>
@@ -188,20 +185,16 @@ export function WorkforceAnalyticsIntegrated() {
       </div>
 
       {/* Key Metrics */}
-      <div className="grid grid-cols-4 gap-6">
+      <div className="grid grid-cols-4 gap-4">
         {analyticsMetrics.map((metric, index) => (
-          <Card 
-            key={index} 
-            className="p-6"
-          >
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">{metric.label}</p>
-                <p className="text-3xl font-bold text-gray-900">{metric.value.toLocaleString()}</p>
-                <p className="text-sm text-gray-500 mt-1">{metric.change}</p>
+          <Card key={index}>
+            <CardContent className="pt-6">
+              <div className="text-center">
+                <p className="text-sm text-muted-foreground">{metric.label}</p>
+                <p className="text-3xl font-bold text-foreground">{metric.value.toLocaleString()}</p>
+                <p className="text-sm text-muted-foreground mt-1">{metric.change}</p>
               </div>
-              <metric.icon className={`w-8 h-8 ${metric.color}`} />
-            </div>
+            </CardContent>
           </Card>
         ))}
       </div>

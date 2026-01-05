@@ -150,11 +150,11 @@ export function InterviewsIntegrated() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'scheduled':
-        return <Badge className="bg-blue-100 text-blue-800">Scheduled</Badge>;
+        return <Badge variant="default">Scheduled</Badge>;
       case 'completed':
-        return <Badge className="bg-green-100 text-green-800">Completed</Badge>;
+        return <Badge variant="default">Completed</Badge>;
       case 'cancelled':
-        return <Badge className="bg-red-100 text-red-800">Cancelled</Badge>;
+        return <Badge variant="destructive">Cancelled</Badge>;
       default:
         return <Badge variant="secondary">{status}</Badge>;
     }
@@ -163,11 +163,11 @@ export function InterviewsIntegrated() {
   const getTypeBadge = (type: string) => {
     switch (type) {
       case 'Technical':
-        return <Badge className="bg-purple-100 text-purple-800">Technical</Badge>;
+        return <Badge variant="secondary">Technical</Badge>;
       case 'HR':
-        return <Badge className="bg-orange-100 text-orange-800">HR</Badge>;
+        return <Badge variant="secondary">HR</Badge>;
       case 'Final':
-        return <Badge className="bg-indigo-100 text-indigo-800">Final</Badge>;
+        return <Badge variant="secondary">Final</Badge>;
       default:
         return <Badge variant="secondary">{type}</Badge>;
     }
@@ -175,10 +175,10 @@ export function InterviewsIntegrated() {
 
   if (loading) {
     return (
-      <div className="p-6 flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <Loader2 className="w-12 h-12 text-blue-600 animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">Loading interviews...</p>
+      <div className="max-w-9xl mx-auto space-y-6">
+        <div className="flex flex-col items-center justify-center min-h-[400px]">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+          <span className="ml-2 text-sm text-muted-foreground">Loading interviews...</span>
         </div>
       </div>
     );
@@ -186,14 +186,11 @@ export function InterviewsIntegrated() {
 
   if (error) {
     return (
-      <div className="p-6">
-        <Card className="p-6 border-red-200 bg-red-50">
-          <div className="flex items-center space-x-3">
-            <XCircle className="w-6 h-6 text-red-600" />
-            <div>
-              <h3 className="font-semibold text-red-900">Error Loading Data</h3>
-              <p className="text-sm text-red-700">{error}</p>
-            </div>
+      <div className="max-w-9xl mx-auto space-y-6">
+        <Card className="p-6 border-destructive bg-destructive/10">
+          <div className="flex items-center gap-2 text-destructive">
+            <XCircle className="w-5 h-5" />
+            <span>{error}</span>
           </div>
           <Button onClick={fetchData} className="mt-4">
             Try Again
@@ -212,8 +209,8 @@ export function InterviewsIntegrated() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-semibold">Interviews</h2>
-          <p className="text-gray-600">View and manage all scheduled interviews</p>
+          <h2 className="text-2xl font-semibold text-foreground">Interviews</h2>
+          <p className="text-sm text-muted-foreground mt-1">View and manage all scheduled interviews</p>
         </div>
         <div className="flex items-center space-x-3">
           <Button variant="outline" onClick={fetchData}>
@@ -226,35 +223,35 @@ export function InterviewsIntegrated() {
       {/* Stats Cards */}
       <div className="grid grid-cols-4 gap-4">
         <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm">Total Interviews</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{interviews.length}</div>
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground">Total Interviews</p>
+              <p className="text-3xl font-bold text-foreground">{interviews.length}</p>
+            </div>
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm">Scheduled</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-blue-600">{scheduledCount}</div>
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground">Scheduled</p>
+              <p className="text-3xl font-bold text-foreground">{scheduledCount}</p>
+            </div>
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm">Completed</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-green-600">{completedCount}</div>
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground">Completed</p>
+              <p className="text-3xl font-bold text-foreground">{completedCount}</p>
+            </div>
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm">Cancelled</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-red-600">{cancelledCount}</div>
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground">Cancelled</p>
+              <p className="text-3xl font-bold text-foreground">{cancelledCount}</p>
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -273,7 +270,7 @@ export function InterviewsIntegrated() {
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="px-3 py-2 border border-input rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-ring"
         >
           <option value="all">All Status</option>
           <option value="scheduled">Scheduled</option>
@@ -283,7 +280,7 @@ export function InterviewsIntegrated() {
         <select
           value={typeFilter}
           onChange={(e) => setTypeFilter(e.target.value)}
-          className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="px-3 py-2 border border-input rounded-md bg-background focus:outline-none focus:ring-2 focus:ring-ring"
         >
           <option value="all">All Types</option>
           <option value="Technical">Technical</option>
@@ -297,9 +294,9 @@ export function InterviewsIntegrated() {
         <Card>
           <CardContent className="pt-6">
             <div className="text-center py-12">
-              <Calendar className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-              <p className="text-lg font-medium text-gray-900">No interviews found</p>
-              <p className="text-sm text-gray-600 mt-2">
+              <Calendar className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+              <p className="text-lg font-semibold text-foreground">No interviews found</p>
+              <p className="text-sm text-muted-foreground mt-2">
                 {searchTerm || statusFilter !== 'all' || typeFilter !== 'all'
                   ? 'Try adjusting your filters'
                   : 'No interviews have been scheduled yet'}
@@ -320,7 +317,7 @@ export function InterviewsIntegrated() {
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
-                      <CardTitle className="text-lg">
+                      <CardTitle className="text-lg font-semibold">
                         {group.interviews.length === 1 
                           ? group.interviews[0].candidate_name
                           : `${group.interviews.length} Candidates`
@@ -349,10 +346,10 @@ export function InterviewsIntegrated() {
                       <p className="text-sm font-medium text-muted-foreground mb-2">Candidates:</p>
                       <div className="space-y-2">
                         {group.interviews.map((interview) => (
-                          <div key={interview.id} className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
+                          <div key={interview.id} className="flex items-center justify-between p-2 bg-muted rounded-lg">
                             <div>
-                              <p className="text-sm font-medium">{interview.candidate_name}</p>
-                              <p className="text-xs text-muted-foreground">{interview.job_title}</p>
+                              <p className="font-semibold text-foreground">{interview.candidate_name}</p>
+                              <p className="text-sm text-muted-foreground">{interview.job_title}</p>
                             </div>
                             <div className="flex gap-1">
                               {getStatusBadge(interview.status)}
@@ -391,11 +388,11 @@ export function InterviewsIntegrated() {
                       </div>
                       <div className="space-y-2">
                         {teamMembers.map((member, idx) => (
-                          <div key={idx} className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
+                          <div key={idx} className="flex items-center justify-between p-2 bg-muted rounded-lg">
                             <div className="flex items-center gap-2">
-                              <UserCheck className="w-4 h-4 text-blue-600" />
+                              <UserCheck className="w-4 h-4 text-primary" />
                               <div>
-                                <p className="text-sm font-medium">{member.employee_name}</p>
+                                <p className="text-sm font-semibold text-foreground">{member.employee_name}</p>
                                 <p className="text-xs text-muted-foreground">{member.employee_email}</p>
                               </div>
                             </div>
@@ -423,7 +420,7 @@ export function InterviewsIntegrated() {
                         .map((interview) => (
                           <div key={interview.id} className="mb-2">
                             <p className="text-xs text-muted-foreground font-medium">{interview.candidate_name}:</p>
-                            <p className="text-sm text-gray-700">{interview.notes}</p>
+                            <p className="text-sm text-foreground">{interview.notes}</p>
                           </div>
                         ))}
                     </div>

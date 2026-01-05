@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Button } from '../../ui/button';
 import { Input } from '../../ui/input';
 import { Label } from '../../ui/label';
-import { X, Mail } from 'lucide-react';
+import { X, Mail, XCircle } from 'lucide-react';
 import { recruitmentService, Candidate } from '../../../lib/mockServices';
 
 interface ScheduleInterviewModalProps {
@@ -10,9 +10,10 @@ interface ScheduleInterviewModalProps {
   onClose: () => void;
   onSubmit: (data: any) => void;
   candidate: Candidate;
+  conflictError?: string | null;
 }
 
-export function ScheduleInterviewModal({ isOpen, onClose, onSubmit, candidate }: ScheduleInterviewModalProps) {
+export function ScheduleInterviewModal({ isOpen, onClose, onSubmit, candidate, conflictError }: ScheduleInterviewModalProps) {
   const [teams, setTeams] = useState<any[]>([]);
   const [showEmailPreview, setShowEmailPreview] = useState(false);
   const [emailContent, setEmailContent] = useState('');
@@ -74,6 +75,7 @@ export function ScheduleInterviewModal({ isOpen, onClose, onSubmit, candidate }:
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (conflictError) return; // Prevent submission if there's a conflict
     onSubmit(formData);
   };
 
@@ -94,6 +96,19 @@ export function ScheduleInterviewModal({ isOpen, onClose, onSubmit, candidate }:
 
         {!showEmailPreview ? (
           <form onSubmit={handleSubmit} className="p-6 space-y-4">
+            {/* Conflict Error Message */}
+            {conflictError && (
+              <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+                <div className="flex items-start gap-3">
+                  <XCircle className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" />
+                  <div className="flex-1">
+                    <p className="text-sm font-semibold text-red-900 mb-1">Scheduling Conflict</p>
+                    <p className="text-sm text-red-700 whitespace-pre-line">{conflictError}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
             <div>
               <Label htmlFor="date">Interview Date *</Label>
               <Input
@@ -102,6 +117,7 @@ export function ScheduleInterviewModal({ isOpen, onClose, onSubmit, candidate }:
                 value={formData.interview_date}
                 onChange={(e) => setFormData({ ...formData, interview_date: e.target.value })}
                 required
+                disabled={!!conflictError}
               />
             </div>
 
@@ -113,6 +129,7 @@ export function ScheduleInterviewModal({ isOpen, onClose, onSubmit, candidate }:
                 onChange={(e) => setFormData({ ...formData, interview_time: e.target.value })}
                 placeholder="e.g., 10:00 AM, 2:30 PM"
                 required
+                disabled={!!conflictError}
               />
             </div>
 
@@ -122,8 +139,9 @@ export function ScheduleInterviewModal({ isOpen, onClose, onSubmit, candidate }:
                 id="location"
                 value={formData.location}
                 onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
                 required
+                disabled={!!conflictError}
               >
                 <option>Google Meet - meet.google.com/xxx-xxxx-xxx</option>
                 <option>Zoom - zoom.us/j/123456789</option>
@@ -139,8 +157,9 @@ export function ScheduleInterviewModal({ isOpen, onClose, onSubmit, candidate }:
                 id="type"
                 value={formData.interview_type}
                 onChange={(e) => setFormData({ ...formData, interview_type: e.target.value as any })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
                 required
+                disabled={!!conflictError}
               >
                 <option value="Technical">Technical</option>
                 <option value="HR">HR</option>
@@ -154,7 +173,8 @@ export function ScheduleInterviewModal({ isOpen, onClose, onSubmit, candidate }:
                 id="team"
                 value={formData.interview_team_id}
                 onChange={(e) => handleTeamChange(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                disabled={!!conflictError}
               >
                 <option value="">No team assigned</option>
                 {teams.map(team => (
@@ -173,7 +193,8 @@ export function ScheduleInterviewModal({ isOpen, onClose, onSubmit, candidate }:
                 onChange={(e) => setFormData({ ...formData, additional_notes: e.target.value })}
                 placeholder="Any additional information for the candidate..."
                 rows={3}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+                disabled={!!conflictError}
               />
             </div>
 
@@ -182,6 +203,7 @@ export function ScheduleInterviewModal({ isOpen, onClose, onSubmit, candidate }:
                 type="button" 
                 variant="outline"
                 onClick={() => setShowEmailPreview(true)}
+                disabled={!!conflictError}
               >
                 <Mail className="w-4 h-4 mr-2" />
                 Preview Email
@@ -190,7 +212,7 @@ export function ScheduleInterviewModal({ isOpen, onClose, onSubmit, candidate }:
                 <Button type="button" variant="outline" onClick={onClose}>
                   Cancel
                 </Button>
-                <Button type="submit">
+                <Button type="submit" disabled={!!conflictError}>
                   Schedule Interview
                 </Button>
               </div>
@@ -213,7 +235,7 @@ export function ScheduleInterviewModal({ isOpen, onClose, onSubmit, candidate }:
               >
                 Back to Form
               </Button>
-              <Button onClick={handleSubmit}>
+              <Button onClick={handleSubmit} disabled={!!conflictError}>
                 Send & Schedule
               </Button>
             </div>

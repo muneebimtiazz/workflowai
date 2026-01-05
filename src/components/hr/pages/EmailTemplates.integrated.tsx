@@ -34,6 +34,7 @@ const MOCK_PLACEHOLDER_VALUES: Record<string, string> = {
   interview_date: 'January 20, 2025',
   interview_time: '2:00 PM',
   location: 'Conference Room A, 3rd Floor',
+  interview_type: 'Technical Interview',
   hr_contact: 'hr@company.com',
   employee_name: 'Sarah Johnson',
   start_date: 'February 1, 2025',
@@ -54,25 +55,33 @@ const PREDEFINED_TEMPLATES: EmailTemplate[] = [
   {
     id: 'interview-invitation',
     name: 'Interview Invitation',
-    subject: 'Interview Invitation for {{job_title}} Position',
+    subject: 'Interview Invitation for {{job_title}} Position at {{company_name}}',
     body: `Dear {{candidate_name}},
 
 Thank you for your interest in the {{job_title}} position at {{company_name}}.
 
-We would like to invite you for an interview. Please find the details below:
+We were impressed with your application and would like to invite you for an interview. Please find the details below:
 
-Date: {{interview_date}}
-Time: {{interview_time}}
-Location: {{location}}
+Interview Details:
+- Date: {{interview_date}}
+- Time: {{interview_time}}
+- Location: {{location}}
+- Interview Type: {{interview_type}}
+- Duration: Approximately 45-60 minutes
 
-Please confirm your availability by replying to this email. If you need to reschedule, please contact us at {{hr_contact}}.
+What to Expect:
+- Discussion about your background and experience
+- Overview of the role and our team
+- Opportunity for you to ask questions
 
-We look forward to meeting you.
+Please confirm your availability by replying to this email within 48 hours. If you need to reschedule or have any questions, please contact us at {{hr_contact}}.
+
+We look forward to meeting you and learning more about how you can contribute to our team.
 
 Best regards,
 HR Team
 {{company_name}}`,
-    placeholders: ['candidate_name', 'job_title', 'interview_date', 'interview_time', 'location', 'hr_contact', 'company_name'],
+    placeholders: ['candidate_name', 'job_title', 'company_name', 'interview_date', 'interview_time', 'location', 'interview_type', 'hr_contact'],
     triggerEvent: 'interview_scheduled'
   },
   {
@@ -103,6 +112,38 @@ HR Team
     triggerEvent: 'offer_sent'
   },
   {
+    id: 'hired-confirmation',
+    name: 'Hired Confirmation',
+    subject: 'Welcome to {{company_name}} - Your Offer Has Been Accepted!',
+    body: `Dear {{candidate_name}},
+
+Congratulations! We are thrilled to confirm that you have accepted our offer for the {{job_title}} position at {{company_name}}.
+
+We are excited to have you join our {{department}} team. Here's what happens next:
+
+Next Steps:
+1. You will receive your official employment contract within 2 business days
+2. Please complete the required onboarding documents by {{start_date}}
+3. Your manager, {{manager_name}}, will contact you before your start date
+4. On {{start_date}}, please report to the reception at 9:00 AM
+
+Important Information:
+- Your start date: {{start_date}}
+- Your department: {{department}}
+- Your manager: {{manager_name}}
+- HR Contact: {{hr_contact}}
+
+If you have any questions before your start date, please don't hesitate to reach out to us.
+
+We look forward to welcoming you to the team!
+
+Best regards,
+HR Team
+{{company_name}}`,
+    placeholders: ['candidate_name', 'company_name', 'job_title', 'department', 'start_date', 'manager_name', 'hr_contact'],
+    triggerEvent: 'offer_accepted'
+  },
+  {
     id: 'rejection-email',
     name: 'Rejection Email',
     subject: 'Application Update - {{job_title}} Position',
@@ -113,6 +154,8 @@ Thank you for your interest in the {{job_title}} position at {{company_name}} an
 After careful consideration, we have decided to move forward with other candidates whose qualifications more closely match our current needs.
 
 We appreciate your interest in {{company_name}} and wish you the best in your job search.
+
+We encourage you to keep an eye on our career page for future opportunities that may be a better fit.
 
 Best regards,
 HR Team
@@ -146,31 +189,28 @@ HR Team
     triggerEvent: 'onboarding_started'
   },
   {
-    id: 'leave-approval',
-    name: 'Leave Approval / Rejection',
-    subject: 'Leave Request {{leave_status}}',
-    body: `Dear {{employee_name}},
+    id: 'interview-rejection',
+    name: 'Interview Rejection',
+    subject: 'Update on Your Application - {{job_title}} Position',
+    body: `Dear {{candidate_name}},
 
-Your leave request has been {{leave_status}}.
+Thank you for taking the time to interview with us for the {{job_title}} position at {{company_name}}.
 
-Leave Details:
-- Type: {{leave_type}}
-- Start Date: {{leave_start}}
-- End Date: {{leave_end}}
+We appreciate the opportunity to learn more about your background and experience during your interview on {{interview_date}} ({{interview_type}} interview).
 
-{{#if leave_status == "Approved"}}
-Your leave request has been approved. Please ensure all your pending tasks are completed before your leave begins.
-{{else}}
-Unfortunately, your leave request could not be approved at this time. Please contact your manager or HR at {{hr_contact}} to discuss alternative arrangements.
-{{/if}}
+After careful consideration of all candidates, we have decided to move forward with other applicants whose qualifications more closely align with our current needs for this role.
 
-If you have any questions, please contact us at {{hr_contact}}.
+We were impressed with your skills and experience, and we encourage you to keep an eye on our career page for future opportunities that may be a better fit.
+
+We wish you the very best in your job search and professional endeavors.
+
+If you have any questions, please feel free to contact us at {{hr_contact}}.
 
 Best regards,
 HR Team
 {{company_name}}`,
-    placeholders: ['employee_name', 'leave_status', 'leave_type', 'leave_start', 'leave_end', 'hr_contact', 'company_name'],
-    triggerEvent: 'leave_request_processed'
+    placeholders: ['candidate_name', 'job_title', 'company_name', 'interview_date', 'interview_type', 'hr_contact'],
+    triggerEvent: 'interview_rejected'
   }
 ];
 
@@ -197,14 +237,19 @@ const EMAIL_AUTOMATION: Array<{ event: string; templateId: string; description: 
     description: 'When an offer is sent, automatically notify the candidate'
   },
   {
+    event: 'offer_accepted',
+    templateId: 'hired-confirmation',
+    description: 'When a candidate accepts the offer, send welcome and onboarding information'
+  },
+  {
     event: 'onboarding_started',
     templateId: 'onboarding-welcome',
     description: 'When onboarding begins, send welcome email to new employee'
   },
   {
-    event: 'leave_request_processed',
-    templateId: 'leave-approval',
-    description: 'When leave request is approved or rejected, notify employee'
+    event: 'interview_rejected',
+    templateId: 'interview-rejection',
+    description: 'When a candidate is rejected after an interview, send rejection notification'
   }
 ];
 
@@ -277,8 +322,8 @@ export function EmailTemplates() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-semibold">Email Templates</h2>
-          <p className="text-muted-foreground mt-1">
+          <h2 className="text-2xl font-semibold text-foreground">Email Templates</h2>
+          <p className="text-sm text-muted-foreground mt-1">
             Manage HR email templates with dynamic placeholders
           </p>
         </div>

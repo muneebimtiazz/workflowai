@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Card } from '../../ui/card';
+import { Card, CardContent } from '../../ui/card';
 import { Button } from '../../ui/button';
 import { Badge } from '../../ui/badge';
 import { Input } from '../../ui/input';
@@ -217,10 +217,10 @@ export function EmployeeLifecycleIntegrated() {
 
   if (loading) {
     return (
-      <div className="p-6 flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <Loader2 className="w-12 h-12 text-blue-600 animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">Loading employee lifecycle data...</p>
+      <div className="max-w-9xl mx-auto space-y-6">
+        <div className="flex flex-col items-center justify-center min-h-[400px]">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+          <span className="ml-2 text-sm text-muted-foreground">Loading employee lifecycle data...</span>
         </div>
       </div>
     );
@@ -228,14 +228,11 @@ export function EmployeeLifecycleIntegrated() {
 
   if (error) {
     return (
-      <div className="p-6">
-        <Card className="p-6 border-red-200 bg-red-50">
-          <div className="flex items-center space-x-3">
-            <XCircle className="w-6 h-6 text-red-600" />
-            <div>
-              <h3 className="font-semibold text-red-900">Error Loading Data</h3>
-              <p className="text-sm text-red-700">{error}</p>
-            </div>
+      <div className="max-w-9xl mx-auto space-y-6">
+        <Card className="p-6 border-destructive bg-destructive/10">
+          <div className="flex items-center gap-2 text-destructive">
+            <XCircle className="w-5 h-5" />
+            <span>{error}</span>
           </div>
           <Button onClick={fetchData} className="mt-4">
             Try Again
@@ -266,9 +263,9 @@ export function EmployeeLifecycleIntegrated() {
                 {selectedEmployee.full_name.split(' ').map((n: string) => n[0]).join('').toUpperCase().substring(0, 2)}
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-gray-900">{selectedEmployee.full_name}</h2>
-                <p className="text-gray-600">{selectedEmployee.job_title}</p>
-                <p className="text-sm text-gray-500">{selectedEmployee.employee_id}</p>
+                <h2 className="text-2xl font-bold text-foreground">{selectedEmployee.full_name}</h2>
+                <p className="text-muted-foreground">{selectedEmployee.job_title}</p>
+                <p className="text-sm text-muted-foreground">{selectedEmployee.employee_id}</p>
                 <div className="mt-2">
                   <LifecycleStateBadge state={selectedEmployee.lifecycle_state || 'active'} />
                 </div>
@@ -296,7 +293,7 @@ export function EmployeeLifecycleIntegrated() {
             </h3>
             <div className="space-y-3">
               <div>
-                <p className="text-sm text-gray-500">Department</p>
+                <p className="text-sm text-muted-foreground">Department</p>
                 <p className="font-medium text-gray-900">{selectedEmployee.department}</p>
               </div>
               <div>
@@ -448,54 +445,50 @@ export function EmployeeLifecycleIntegrated() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-semibold">Employee Lifecycle Management</h2>
-          <p className="text-gray-600">Manage employee journey from hiring to offboarding</p>
+          <h2 className="text-2xl font-semibold text-foreground">Employee Lifecycle Management</h2>
+          <p className="text-sm text-muted-foreground mt-1">Manage employee journey from hiring to offboarding</p>
         </div>
       </div>
 
       {/* Key Metrics */}
-      <div className="grid grid-cols-4 gap-6">
-        <Card className="p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Total Employees</p>
-              <p className="text-3xl font-bold text-gray-900">{employees.length}</p>
+      <div className="grid grid-cols-4 gap-4">
+        <Card>
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground">Total Employees</p>
+              <p className="text-3xl font-bold text-foreground">{employees.length}</p>
             </div>
-            <Users className="w-8 h-8 text-blue-600" />
-          </div>
+          </CardContent>
         </Card>
-        <Card className="p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Onboarding</p>
-              <p className="text-3xl font-bold text-yellow-600">
+        <Card>
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground">Onboarding</p>
+              <p className="text-3xl font-bold text-foreground">
                 {getEmployeesByLifecycleState('onboarding').length}
               </p>
             </div>
-            <UserPlus className="w-8 h-8 text-yellow-600" />
-          </div>
+          </CardContent>
         </Card>
-        <Card className="p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Active</p>
-              <p className="text-3xl font-bold text-green-600">
+        <Card>
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground">Active</p>
+              <p className="text-3xl font-bold text-foreground">
                 {getEmployeesByLifecycleState('active').length}
               </p>
             </div>
-            <TrendingUp className="w-8 h-8 text-green-600" />
-          </div>
+          </CardContent>
         </Card>
-        <Card className="p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Notice Period</p>
-              <p className="text-3xl font-bold text-orange-600">
+        <Card>
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground">Notice Period</p>
+              <p className="text-3xl font-bold text-foreground">
                 {getEmployeesByLifecycleState('notice').length}
               </p>
             </div>
-            <UserMinus className="w-8 h-8 text-orange-600" />
-          </div>
+          </CardContent>
         </Card>
       </div>
 
@@ -530,7 +523,7 @@ export function EmployeeLifecycleIntegrated() {
           {/* Employee List */}
           <Card className="p-6">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-lg font-semibold text-gray-900">Employee Directory</h3>
+              <h3 className="text-lg font-semibold text-foreground">Employee Directory</h3>
               <Badge variant="outline">{filteredEmployees.length} employees</Badge>
             </div>
             
@@ -547,12 +540,12 @@ export function EmployeeLifecycleIntegrated() {
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-gray-200">
-                      <th className="text-left py-3 px-4 font-medium text-gray-600">Employee</th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-600">Position</th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-600">Department</th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-600">Lifecycle State</th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-600">Hire Date</th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-600">Actions</th>
+                      <th className="text-left py-3 px-4 font-medium text-muted-foreground">Employee</th>
+                      <th className="text-left py-3 px-4 font-medium text-muted-foreground">Position</th>
+                      <th className="text-left py-3 px-4 font-medium text-muted-foreground">Department</th>
+                      <th className="text-left py-3 px-4 font-medium text-muted-foreground">Lifecycle State</th>
+                      <th className="text-left py-3 px-4 font-medium text-muted-foreground">Hire Date</th>
+                      <th className="text-left py-3 px-4 font-medium text-muted-foreground">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -573,7 +566,7 @@ export function EmployeeLifecycleIntegrated() {
         <TabsContent value="onboarding" className="space-y-6">
           <div className="grid grid-cols-3 gap-6">
             <Card className="p-6">
-              <h3 className="font-semibold text-gray-900 mb-4">Onboarding Stats</h3>
+              <h3 className="font-semibold text-foreground mb-4">Onboarding Stats</h3>
               <div className="space-y-4">
                 <div className="p-4 bg-green-50 rounded-lg">
                   <p className="text-sm font-medium text-green-900">Active Processes</p>
@@ -593,11 +586,11 @@ export function EmployeeLifecycleIntegrated() {
             </Card>
 
             <Card className="p-6 col-span-2">
-              <h3 className="font-semibold text-gray-900 mb-4">Active Onboarding Processes</h3>
+              <h3 className="font-semibold text-foreground mb-4">Active Onboarding Processes</h3>
               {onboardingProcesses.length === 0 ? (
                 <div className="text-center py-8">
                   <UserPlus className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                  <p className="text-gray-600">No active onboarding processes</p>
+                  <p className="text-muted-foreground">No active onboarding processes</p>
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -634,7 +627,7 @@ export function EmployeeLifecycleIntegrated() {
         <TabsContent value="offboarding" className="space-y-6">
           <div className="grid grid-cols-3 gap-6">
             <Card className="p-6">
-              <h3 className="font-semibold text-gray-900 mb-4">Offboarding Stats</h3>
+              <h3 className="font-semibold text-foreground mb-4">Offboarding Stats</h3>
               <div className="space-y-4">
                 <div className="p-4 bg-orange-50 rounded-lg">
                   <p className="text-sm font-medium text-orange-900">Active Processes</p>
@@ -652,11 +645,11 @@ export function EmployeeLifecycleIntegrated() {
             </Card>
 
             <Card className="p-6 col-span-2">
-              <h3 className="font-semibold text-gray-900 mb-4">Active Offboarding Processes</h3>
+              <h3 className="font-semibold text-foreground mb-4">Active Offboarding Processes</h3>
               {offboardingProcesses.length === 0 ? (
                 <div className="text-center py-8">
                   <UserMinus className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                  <p className="text-gray-600">No active offboarding processes</p>
+                  <p className="text-muted-foreground">No active offboarding processes</p>
                 </div>
               ) : (
                 <div className="space-y-4">

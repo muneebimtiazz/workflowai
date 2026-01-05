@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Card } from '../../ui/card';
+import { Card, CardContent } from '../../ui/card';
 import { Button } from '../../ui/button';
 import { Badge } from '../../ui/badge';
 import {
@@ -59,10 +59,10 @@ export function OffboardingManagementIntegrated() {
 
   if (loading) {
     return (
-      <div className="p-6 flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <Loader2 className="w-12 h-12 text-blue-600 animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">Loading offboarding data...</p>
+      <div className="max-w-9xl mx-auto space-y-6">
+        <div className="flex flex-col items-center justify-center min-h-[400px]">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+          <span className="ml-2 text-sm text-muted-foreground">Loading offboarding data...</span>
         </div>
       </div>
     );
@@ -70,14 +70,11 @@ export function OffboardingManagementIntegrated() {
 
   if (error) {
     return (
-      <div className="p-6">
-        <Card className="p-6 border-red-200 bg-red-50">
-          <div className="flex items-center space-x-3">
-            <XCircle className="w-6 h-6 text-red-600" />
-            <div>
-              <h3 className="font-semibold text-red-900">Error Loading Data</h3>
-              <p className="text-sm text-red-700">{error}</p>
-            </div>
+      <div className="max-w-9xl mx-auto space-y-6">
+        <Card className="p-6 border-destructive bg-destructive/10">
+          <div className="flex items-center gap-2 text-destructive">
+            <XCircle className="w-5 h-5" />
+            <span>{error}</span>
           </div>
           <Button onClick={fetchData} className="mt-4">
             Try Again
@@ -91,8 +88,8 @@ export function OffboardingManagementIntegrated() {
     <div className="max-w-9xl mx-auto space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-semibold ">Offboarding Management</h2>
-          <p className="text-gray-600">Manage employee departures with compliance checklists</p>
+          <h2 className="text-2xl font-semibold text-foreground">Offboarding Management</h2>
+          <p className="text-sm text-muted-foreground mt-1">Manage employee departures with compliance checklists</p>
         </div>
         <Button onClick={() => setShowOffboardingModal(true)}>
           <Plus className="w-4 h-4 mr-2" />
@@ -100,76 +97,72 @@ export function OffboardingManagementIntegrated() {
         </Button>
       </div>
 
-      <div className="grid grid-cols-4 gap-6">
-        <Card className="p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Active Offboarding</p>
-              <p className="text-3xl font-bold text-orange-600">{stats?.active_processes || 0}</p>
+      <div className="grid grid-cols-4 gap-4">
+        <Card>
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground">Active Offboarding</p>
+              <p className="text-3xl font-bold text-foreground">{stats?.active_processes || 0}</p>
             </div>
-            <UserMinus className="w-8 h-8 text-orange-600" />
-          </div>
+          </CardContent>
         </Card>
-        <Card className="p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Completed</p>
-              <p className="text-3xl font-bold text-green-600">{stats?.completed_processes || 0}</p>
+        <Card>
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground">Completed</p>
+              <p className="text-3xl font-bold text-foreground">{stats?.completed_processes || 0}</p>
             </div>
-            <CheckCircle className="w-8 h-8 text-green-600" />
-          </div>
+          </CardContent>
         </Card>
-        <Card className="p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Pending Tasks</p>
-              <p className="text-3xl font-bold text-yellow-600">{stats?.pending_tasks || 0}</p>
+        <Card>
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground">Pending Tasks</p>
+              <p className="text-3xl font-bold text-foreground">{stats?.pending_tasks || 0}</p>
             </div>
-            <Clock className="w-8 h-8 text-yellow-600" />
-          </div>
+          </CardContent>
         </Card>
-        <Card className="p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Exit Interviews</p>
-              <p className="text-3xl font-bold text-blue-600">{stats?.exit_interviews_scheduled || 0}</p>
+        <Card>
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground">Exit Interviews</p>
+              <p className="text-3xl font-bold text-foreground">{stats?.exit_interviews_scheduled || 0}</p>
             </div>
-            <FileText className="w-8 h-8 text-blue-600" />
-          </div>
+          </CardContent>
         </Card>
       </div>
 
       <div className="grid grid-cols-2 gap-6">
         <Card className="p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Active Offboarding</h3>
+          <h3 className="text-lg font-semibold text-foreground mb-4">Active Offboarding</h3>
           {processes.length === 0 ? (
             <div className="text-center py-8">
-              <UserMinus className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-              <p className="text-gray-600">No active offboarding processes</p>
+              <UserMinus className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
+              <p className="text-sm text-muted-foreground">No active offboarding processes</p>
             </div>
           ) : (
             <div className="space-y-4">
               {processes.map((process) => (
-                <div key={process.id} className="p-4 border border-gray-200 rounded-lg hover:border-orange-300 transition-colors">
+                <div key={process.id} className="p-4 border rounded-lg hover:bg-muted/50 transition-colors">
                   <div className="flex items-center justify-between mb-2">
                     <div>
-                      <h4 className="font-medium text-gray-900">
+                      <h4 className="font-semibold text-foreground">
                         {process.user?.full_name || 'Unknown Employee'}
                       </h4>
-                      <p className="text-sm text-gray-600">
+                      <p className="text-sm text-muted-foreground">
                         {process.user?.department || 'No department'} • {process.user?.position || 'No position'}
                       </p>
                     </div>
                     <Badge variant="outline">{process.completion_percentage}%</Badge>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2 mb-2">
+                  <div className="w-full bg-muted rounded-full h-2 mb-2">
                     <div 
-                      className="bg-orange-600 h-2 rounded-full transition-all" 
+                      className="bg-primary h-2 rounded-full transition-all" 
                       style={{ width: `${process.completion_percentage}%` }}
                     />
                   </div>
                   <div className="flex items-center justify-between">
-                    <p className="text-xs text-gray-500 flex items-center">
+                    <p className="text-xs text-muted-foreground flex items-center">
                       <Calendar className="w-3 h-3 mr-1" />
                       Last day: {formatDate(process.last_working_day)}
                     </p>
@@ -186,7 +179,7 @@ export function OffboardingManagementIntegrated() {
         </Card>
 
         <Card className="p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Offboarding Statistics</h3>
+          <h3 className="text-lg font-semibold text-foreground mb-4">Offboarding Statistics</h3>
           <div className="space-y-4">
             <div className="p-4 bg-orange-50 rounded-lg">
               <div className="flex items-center justify-between mb-2">
@@ -217,7 +210,7 @@ export function OffboardingManagementIntegrated() {
       </div>
 
       <Card className="p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Exit Interview Management</h3>
+          <h3 className="text-lg font-semibold text-foreground mb-4">Exit Interview Management</h3>
         <div className="grid grid-cols-3 gap-4">
           <div className="p-4 border border-gray-200 rounded-lg">
             <div className="flex items-center space-x-3">
@@ -225,8 +218,8 @@ export function OffboardingManagementIntegrated() {
                 <Calendar className="w-5 h-5 text-blue-600" />
               </div>
               <div>
-                <p className="text-sm text-gray-600">Scheduled</p>
-                <p className="text-2xl font-bold text-gray-900">{stats?.exit_interviews_scheduled || 0}</p>
+                <p className="text-sm text-muted-foreground">Scheduled</p>
+                <p className="text-2xl font-bold text-foreground">{stats?.exit_interviews_scheduled || 0}</p>
               </div>
             </div>
           </div>
@@ -236,8 +229,8 @@ export function OffboardingManagementIntegrated() {
                 <CheckCircle className="w-5 h-5 text-green-600" />
               </div>
               <div>
-                <p className="text-sm text-gray-600">Completed</p>
-                <p className="text-2xl font-bold text-gray-900">{stats?.exit_interviews_completed || 0}</p>
+                <p className="text-sm text-muted-foreground">Completed</p>
+                <p className="text-2xl font-bold text-foreground">{stats?.exit_interviews_completed || 0}</p>
               </div>
             </div>
           </div>
@@ -247,8 +240,8 @@ export function OffboardingManagementIntegrated() {
                 <FileText className="w-5 h-5 text-purple-600" />
               </div>
               <div>
-                <p className="text-sm text-gray-600">Avg Completion</p>
-                <p className="text-2xl font-bold text-gray-900">{stats?.average_completion_rate?.toFixed(0) || 0}%</p>
+                <p className="text-sm text-muted-foreground">Avg Completion</p>
+                <p className="text-2xl font-bold text-foreground">{stats?.average_completion_rate?.toFixed(0) || 0}%</p>
               </div>
             </div>
           </div>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Card } from '../../ui/card';
+import { Card, CardContent } from '../../ui/card';
 import { Button } from '../../ui/button';
 import { Badge } from '../../ui/badge';
 import {
@@ -63,10 +63,10 @@ export function HiringDashboardIntegrated({ onNavigate }: HiringDashboardIntegra
 
   if (loading) {
     return (
-      <div className="p-6 flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <Loader2 className="w-12 h-12 text-blue-600 animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">Loading hiring dashboard...</p>
+      <div className="max-w-9xl mx-auto space-y-6">
+        <div className="flex flex-col items-center justify-center min-h-[400px]">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+          <span className="ml-2 text-sm text-muted-foreground">Loading hiring dashboard...</span>
         </div>
       </div>
     );
@@ -74,14 +74,11 @@ export function HiringDashboardIntegrated({ onNavigate }: HiringDashboardIntegra
 
   if (error) {
     return (
-      <div className="p-6">
-        <Card className="p-6 border-red-200 bg-red-50">
-          <div className="flex items-center space-x-3">
-            <XCircle className="w-6 h-6 text-red-600" />
-            <div>
-              <h3 className="font-semibold text-red-900">Error Loading Data</h3>
-              <p className="text-sm text-red-700">{error}</p>
-            </div>
+      <div className="max-w-9xl mx-auto space-y-6">
+        <Card className="p-6 border-destructive bg-destructive/10">
+          <div className="flex items-center gap-2 text-destructive">
+            <XCircle className="w-5 h-5" />
+            <span>{error}</span>
           </div>
           <Button onClick={fetchData} className="mt-4">
             Try Again
@@ -127,8 +124,8 @@ export function HiringDashboardIntegrated({ onNavigate }: HiringDashboardIntegra
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-        <h2 className="text-2xl font-semibold">Hiring Dashboard</h2>
-          <p className="text-gray-600">Manage your recruitment workflow</p>
+          <h2 className="text-2xl font-semibold text-foreground">Hiring Dashboard</h2>
+          <p className="text-sm text-muted-foreground mt-1">Manage your recruitment workflow</p>
         </div>
         <div className="flex items-center space-x-3">
           <Button variant="outline" onClick={fetchData}>
@@ -139,17 +136,16 @@ export function HiringDashboardIntegrated({ onNavigate }: HiringDashboardIntegra
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-4 gap-6">
+      <div className="grid grid-cols-4 gap-4">
         {statCards.map((stat, index) => (
-          <Card key={index} className="p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className={`p-3 rounded-lg ${stat.color}`}>
-                <stat.icon className="w-6 h-6" />
+          <Card key={index}>
+            <CardContent className="pt-6">
+              <div className="text-center">
+                <p className="text-sm text-muted-foreground">{stat.label}</p>
+                <p className="text-3xl font-bold text-foreground">{stat.value}</p>
+                <p className="text-sm text-muted-foreground mt-1">{stat.change}</p>
               </div>
-            </div>
-            <p className="text-sm text-gray-600 mb-1">{stat.label}</p>
-            <p className="text-3xl font-bold text-gray-900 mb-1">{stat.value}</p>
-            <p className="text-sm text-gray-500">{stat.change}</p>
+            </CardContent>
           </Card>
         ))}
       </div>
@@ -158,7 +154,7 @@ export function HiringDashboardIntegrated({ onNavigate }: HiringDashboardIntegra
         {/* Recent Job Openings */}
         <Card className="p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900">Recent Job Openings</h3>
+            <h3 className="text-lg font-semibold text-foreground">Recent Job Openings</h3>
             <Button 
               variant="ghost" 
               size="sm"
@@ -171,23 +167,23 @@ export function HiringDashboardIntegrated({ onNavigate }: HiringDashboardIntegra
           
           {recentJobs.length === 0 ? (
             <div className="text-center py-8">
-              <Briefcase className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-              <p className="text-gray-600">No job openings yet</p>
+              <Briefcase className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
+              <p className="text-sm text-muted-foreground">No job openings yet</p>
             </div>
           ) : (
             <div className="space-y-3">
               {recentJobs.map(job => (
-                <div key={job.id} className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50">
+                <div key={job.id} className="p-4 border rounded-lg hover:bg-muted/50">
                   <div className="flex items-start justify-between mb-2">
                     <div>
-                      <h4 className="font-medium text-gray-900">{job.title}</h4>
-                      <p className="text-sm text-gray-600">{job.department}</p>
+                      <h4 className="font-semibold text-foreground">{job.title}</h4>
+                      <p className="text-sm text-muted-foreground">{job.department}</p>
                     </div>
                     <Badge variant={job.status === 'open' ? 'default' : 'secondary'}>
                       {job.status}
                     </Badge>
                   </div>
-                  <div className="flex items-center space-x-4 text-sm text-gray-500">
+                  <div className="flex items-center space-x-4 text-sm text-muted-foreground">
                     <span className="flex items-center">
                       <Users className="w-4 h-4 mr-1" />
                       {job.applicants_count} applicants
@@ -206,7 +202,7 @@ export function HiringDashboardIntegrated({ onNavigate }: HiringDashboardIntegra
         {/* Top Candidates */}
         <Card className="p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900">Top Candidates</h3>
+            <h3 className="text-lg font-semibold text-foreground">Top Candidates</h3>
             <Button 
               variant="ghost" 
               size="sm"
@@ -219,32 +215,32 @@ export function HiringDashboardIntegrated({ onNavigate }: HiringDashboardIntegra
           
           {topCandidates.length === 0 ? (
             <div className="text-center py-8">
-              <TrendingUp className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-              <p className="text-gray-600">No candidates yet</p>
+              <TrendingUp className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
+              <p className="text-sm text-muted-foreground">No candidates yet</p>
             </div>
           ) : (
             <div className="space-y-3">
               {topCandidates.map(candidate => (
-                <div key={candidate.id} className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50">
+                <div key={candidate.id} className="p-4 border rounded-lg hover:bg-muted/50">
                   <div className="flex items-start justify-between mb-2">
                     <div>
-                      <h4 className="font-medium text-gray-900">{candidate.name}</h4>
-                      <p className="text-sm text-gray-600">{candidate.job_title}</p>
+                      <h4 className="font-semibold text-foreground">{candidate.name}</h4>
+                      <p className="text-sm text-muted-foreground">{candidate.job_title}</p>
                     </div>
-                    <Badge className="bg-green-100 text-green-800">
+                    <Badge variant="secondary">
                       Rank #{candidate.overall_rank}
                     </Badge>
                   </div>
                   {candidate.resume_score !== undefined && (
                     <div className="flex items-center space-x-2 mb-2">
                       <div className="flex-1">
-                        <div className="flex items-center justify-between text-xs text-gray-600 mb-1">
+                        <div className="flex items-center justify-between text-xs text-muted-foreground mb-1">
                           <span>Resume Score</span>
                           <span className="font-medium">{candidate.resume_score}/100</span>
                         </div>
-                        <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div className="w-full bg-muted rounded-full h-2">
                           <div 
-                            className="bg-green-600 h-2 rounded-full" 
+                            className="bg-primary h-2 rounded-full" 
                             style={{ width: `${candidate.resume_score}%` }}
                           />
                         </div>
@@ -264,7 +260,7 @@ export function HiringDashboardIntegrated({ onNavigate }: HiringDashboardIntegra
       {/* Upcoming Interviews */}
       <Card className="p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900">Upcoming Interviews</h3>
+          <h3 className="text-lg font-semibold text-foreground">Upcoming Interviews</h3>
           <Button 
             variant="ghost" 
             size="sm"
@@ -277,33 +273,33 @@ export function HiringDashboardIntegrated({ onNavigate }: HiringDashboardIntegra
         
         {upcomingInterviews.length === 0 ? (
           <div className="text-center py-8">
-            <Calendar className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-            <p className="text-gray-600">No upcoming interviews</p>
+            <Calendar className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
+            <p className="text-sm text-muted-foreground">No upcoming interviews</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="text-left py-3 px-4 font-medium text-gray-600">Candidate</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-600">Job</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-600">Date & Time</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-600">Type</th>
-                  <th className="text-left py-3 px-4 font-medium text-gray-600">Location</th>
+                <tr className="border-b">
+                  <th className="text-left py-3 px-4 font-medium text-muted-foreground">Candidate</th>
+                  <th className="text-left py-3 px-4 font-medium text-muted-foreground">Job</th>
+                  <th className="text-left py-3 px-4 font-medium text-muted-foreground">Date & Time</th>
+                  <th className="text-left py-3 px-4 font-medium text-muted-foreground">Type</th>
+                  <th className="text-left py-3 px-4 font-medium text-muted-foreground">Location</th>
                 </tr>
               </thead>
               <tbody>
                 {upcomingInterviews.map(interview => (
-                  <tr key={interview.id} className="border-b border-gray-100 hover:bg-gray-50">
-                    <td className="py-4 px-4 font-medium text-gray-900">{interview.candidate_name}</td>
-                    <td className="py-4 px-4 text-gray-600">{interview.job_title}</td>
-                    <td className="py-4 px-4 text-gray-600">
+                  <tr key={interview.id} className="border-b hover:bg-muted/50">
+                    <td className="py-4 px-4 font-medium text-foreground">{interview.candidate_name}</td>
+                    <td className="py-4 px-4 text-sm text-muted-foreground">{interview.job_title}</td>
+                    <td className="py-4 px-4 text-sm text-muted-foreground">
                       {new Date(interview.interview_date).toLocaleDateString()} at {interview.interview_time}
                     </td>
                     <td className="py-4 px-4">
                       <Badge variant="secondary">{interview.interview_type}</Badge>
                     </td>
-                    <td className="py-4 px-4 text-sm text-gray-600 max-w-xs truncate">
+                    <td className="py-4 px-4 text-sm text-muted-foreground max-w-xs truncate">
                       {interview.location}
                     </td>
                   </tr>

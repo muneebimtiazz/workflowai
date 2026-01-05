@@ -1,5 +1,5 @@
 import  { useState, useEffect } from 'react';
-import { Calendar, CheckCircle, XCircle, Clock, AlertCircle, Search } from 'lucide-react';
+import { Calendar, CheckCircle, XCircle, Clock, AlertCircle, Search, Loader2 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../ui/card';
 import { Button } from '../../ui/button';
 import { Input } from '../../ui/input';
@@ -147,9 +147,11 @@ export function TimeOffApprovalsIntegrated() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <Clock className="w-8 h-8 animate-spin text-muted-foreground" />
-        <span className="ml-2 text-muted-foreground">Loading time off requests...</span>
+      <div className="max-w-9xl mx-auto space-y-6">
+        <div className="flex flex-col items-center justify-center min-h-[400px]">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+          <span className="ml-2 text-sm text-muted-foreground">Loading time off requests...</span>
+        </div>
       </div>
     );
   }
@@ -159,8 +161,8 @@ export function TimeOffApprovalsIntegrated() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-semibold">Time Off Approvals</h2>
-          <p className="text-muted-foreground">Review and approve time off requests pending HR approval</p>
+          <h2 className="text-2xl font-semibold text-foreground">Time Off Approvals</h2>
+          <p className="text-sm text-muted-foreground mt-1">Review and approve time off requests pending HR approval</p>
         </div>
         <Badge variant="outline" className="text-lg px-3 py-1">
           {pendingRequests.length} Pending HR Approval
@@ -170,57 +172,45 @@ export function TimeOffApprovalsIntegrated() {
       {/* Stats Cards */}
       <div className="grid grid-cols-4 gap-4">
         <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-foreground flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 text-muted-foreground" />
-              Pending HR Approval
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold text-foreground">{pendingRequests.length}</div>
-            <p className="text-xs text-muted-foreground">Requires your review</p>
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground">Pending HR Approval</p>
+              <p className="text-3xl font-bold text-foreground">{pendingRequests.length}</p>
+              <p className="text-xs text-muted-foreground mt-1">Requires your review</p>
+            </div>
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-foreground flex items-center gap-2">
-              <CheckCircle className="w-4 h-4 text-primary" />
-              Approved
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold text-foreground">
-              {allRequests.filter(r => r.status === 'approved').length}
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground">Approved</p>
+              <p className="text-3xl font-bold text-foreground">
+                {allRequests.filter(r => r.status === 'approved').length}
+              </p>
+              <p className="text-xs text-muted-foreground mt-1">This month</p>
             </div>
-            <p className="text-xs text-muted-foreground">This month</p>
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-foreground flex items-center gap-2">
-              <XCircle className="w-4 h-4 text-destructive" />
-              Rejected
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold text-destructive">
-              {allRequests.filter(r => r.status === 'rejected').length}
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground">Rejected</p>
+              <p className="text-3xl font-bold text-foreground">
+                {allRequests.filter(r => r.status === 'rejected').length}
+              </p>
+              <p className="text-xs text-muted-foreground mt-1">This month</p>
             </div>
-            <p className="text-xs text-muted-foreground">This month</p>
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-foreground flex items-center gap-2">
-              <Clock className="w-4 h-4 text-primary" />
-              Pending Manager
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold text-foreground">
-              {allRequests.filter(r => r.status === 'pending_manager_approval').length}
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground">Pending Manager</p>
+              <p className="text-3xl font-bold text-foreground">
+                {allRequests.filter(r => r.status === 'pending_manager_approval').length}
+              </p>
+              <p className="text-xs text-muted-foreground mt-1">Awaiting manager</p>
             </div>
-            <p className="text-xs text-muted-foreground">Awaiting manager</p>
           </CardContent>
         </Card>
       </div>
@@ -313,14 +303,14 @@ export function TimeOffApprovalsIntegrated() {
                     </div>
 
                     <div className="flex gap-2 pt-4 border-t">
-                      <Button
-                        size="sm"
-                        className="flex-1 bg-green-600 hover:bg-green-700"
-                        onClick={() => {
-                          setSelectedRequest(request);
-                          setShowApproveDialog(true);
-                        }}
-                      >
+                    <Button
+                      size="sm"
+                      className="flex-1"
+                      onClick={() => {
+                        setSelectedRequest(request);
+                        setShowApproveDialog(true);
+                      }}
+                    >
                         <CheckCircle className="w-4 h-4 mr-2" />
                         Approve
                       </Button>
@@ -514,7 +504,7 @@ export function TimeOffApprovalsIntegrated() {
                 <Button
                   onClick={handleApprove}
                   disabled={processing}
-                  className="flex-1 bg-green-600 hover:bg-green-700"
+                  className="flex-1"
                 >
                   {processing ? 'Processing...' : 'Confirm Approval'}
                 </Button>

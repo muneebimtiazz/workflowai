@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Card } from '../../ui/card';
+import { Card, CardContent } from '../../ui/card';
 import { Button } from '../../ui/button';
 import { Badge } from '../../ui/badge';
 import {
@@ -68,10 +68,10 @@ export function InterviewTeamsIntegrated() {
 
   if (loading) {
     return (
-      <div className="p-6 flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <Loader2 className="w-12 h-12 text-blue-600 animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">Loading interview teams...</p>
+      <div className="max-w-9xl mx-auto space-y-6">
+        <div className="flex flex-col items-center justify-center min-h-[400px]">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+          <span className="ml-2 text-sm text-muted-foreground">Loading interview teams...</span>
         </div>
       </div>
     );
@@ -79,14 +79,11 @@ export function InterviewTeamsIntegrated() {
 
   if (error) {
     return (
-      <div className="p-6">
-        <Card className="p-6 border-red-200 bg-red-50">
-          <div className="flex items-center space-x-3">
-            <XCircle className="w-6 h-6 text-red-600" />
-            <div>
-              <h3 className="font-semibold text-red-900">Error Loading Data</h3>
-              <p className="text-sm text-red-700">{error}</p>
-            </div>
+      <div className="max-w-9xl mx-auto space-y-6">
+        <Card className="p-6 border-destructive bg-destructive/10">
+          <div className="flex items-center gap-2 text-destructive">
+            <XCircle className="w-5 h-5" />
+            <span>{error}</span>
           </div>
           <Button onClick={fetchTeams} className="mt-4">
             Try Again
@@ -101,9 +98,8 @@ export function InterviewTeamsIntegrated() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          
-          <h2 className="text-2xl font-semibold">Interview Teams</h2>
-          <p className="text-gray-600">Manage interview panels and interviewers</p>
+          <h2 className="text-2xl font-semibold text-foreground">Interview Teams</h2>
+          <p className="text-sm text-muted-foreground mt-1">Manage interview panels and interviewers</p>
         </div>
         <div className="flex items-center space-x-3">
           <Button variant="outline" onClick={fetchTeams}>
@@ -119,23 +115,35 @@ export function InterviewTeamsIntegrated() {
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4">
-        <Card className="p-4">
-          <p className="text-sm text-gray-600 mb-1">Total Teams</p>
-          <p className="text-2xl font-bold text-gray-900">{teams.length}</p>
+        <Card>
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground">Total Teams</p>
+              <p className="text-3xl font-bold text-foreground">{teams.length}</p>
+            </div>
+          </CardContent>
         </Card>
-        <Card className="p-4">
-          <p className="text-sm text-gray-600 mb-1">Total Interviewers</p>
-          <p className="text-2xl font-bold text-blue-600">
-            {teams.reduce((sum, team) => sum + team.members.length, 0)}
-          </p>
+        <Card>
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground">Total Interviewers</p>
+              <p className="text-3xl font-bold text-foreground">
+                {teams.reduce((sum, team) => sum + team.members.length, 0)}
+              </p>
+            </div>
+          </CardContent>
         </Card>
-        <Card className="p-4">
-          <p className="text-sm text-gray-600 mb-1">Avg. Team Size</p>
-          <p className="text-2xl font-bold text-green-600">
-            {teams.length > 0 
-              ? Math.round(teams.reduce((sum, team) => sum + team.members.length, 0) / teams.length)
-              : 0}
-          </p>
+        <Card>
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground">Avg. Team Size</p>
+              <p className="text-3xl font-bold text-foreground">
+                {teams.length > 0 
+                  ? Math.round(teams.reduce((sum, team) => sum + team.members.length, 0) / teams.length)
+                  : 0}
+              </p>
+            </div>
+          </CardContent>
         </Card>
       </div>
 
@@ -144,8 +152,8 @@ export function InterviewTeamsIntegrated() {
         <Card className="p-12">
           <div className="text-center">
             <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No interview teams yet</h3>
-            <p className="text-gray-600 mb-4">
+            <h3 className="text-lg font-semibold text-foreground mb-2">No interview teams yet</h3>
+            <p className="text-muted-foreground mb-4">
               Create your first interview team to assign interviewers
             </p>
             <Button onClick={() => setShowCreateModal(true)}>
@@ -160,8 +168,8 @@ export function InterviewTeamsIntegrated() {
             <Card key={team.id} className="p-6 hover:shadow-md transition-shadow">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex-1">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">{team.name}</h3>
-                  <div className="flex items-center text-sm text-gray-600 mb-4">
+                  <h3 className="text-xl font-semibold text-foreground mb-2">{team.name}</h3>
+                  <div className="flex items-center text-sm text-muted-foreground mb-4">
                     <Users className="w-4 h-4 mr-1" />
                     {team.members.length} {team.members.length === 1 ? 'member' : 'members'}
                     <span className="mx-2">•</span>
@@ -179,16 +187,16 @@ export function InterviewTeamsIntegrated() {
 
               {/* Team Members */}
               <div className="space-y-3">
-                <p className="text-sm font-medium text-gray-700 mb-2">Team Members:</p>
+                <p className="text-sm font-medium text-foreground mb-2">Team Members:</p>
                 {team.members.map((member, idx) => (
-                  <div key={idx} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div key={idx} className="flex items-center justify-between p-3 bg-muted rounded-lg">
                     <div className="flex items-center space-x-3">
-                      <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                        <UserCheck className="w-5 h-5 text-blue-600" />
+                      <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                        <UserCheck className="w-5 h-5 text-primary" />
                       </div>
                       <div>
-                        <p className="font-medium text-gray-900">{member.employee_name}</p>
-                        <div className="flex items-center text-sm text-gray-600">
+                        <p className="font-semibold text-foreground">{member.employee_name}</p>
+                        <div className="flex items-center text-sm text-muted-foreground">
                           <Mail className="w-3 h-3 mr-1" />
                           {member.employee_email}
                         </div>
